@@ -23,13 +23,13 @@ const ItemTarea = ({ tarea, setListaTareas }) => {
 
   const handleClose = () => setShow(false);
   const handleShow = (tarea) => {
-    consultaTarea(tarea.id).then((respuesta) => {
+    consultaTarea(tarea._id).then((respuesta) => {
       if (respuesta) {
         console.log('tengo que cargar el objeto en el formulario');
         console.log(respuesta);
         setValue('nombreTarea', respuesta.nombreTarea);
         setShow(true);
-        setTareaId(tarea.id);
+        setTareaId(tarea._id);
       } else {
         Swal.fire(
           'Ocurrio un error',
@@ -79,7 +79,7 @@ const ItemTarea = ({ tarea, setListaTareas }) => {
     }).then((result) => {
       if (result.isConfirmed) {
         //borrar la tarea de la API
-        consultaBorrarTarea(tarea.id).then((respuesta) => {
+        consultaBorrarTarea(tarea._id).then((respuesta) => {
           console.log(respuesta);
           if (respuesta && respuesta.status === 200) {
             Swal.fire(

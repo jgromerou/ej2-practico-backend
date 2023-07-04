@@ -63,7 +63,7 @@ const FormularioTarea = () => {
       if (result.isConfirmed) {
         //borrar la lista de tareas de la API
         listaTareas.filter((tarea) =>
-          consultaBorrarTarea(tarea.id).then((respuesta) => {
+          consultaBorrarTarea(tarea._id).then((respuesta) => {
             if (respuesta) {
               console.log(respuesta);
               Swal.fire(
