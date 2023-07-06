@@ -38,9 +38,17 @@ const FormularioTarea = () => {
         obtenerListaTareas().then((respuesta) => setListaTareas(respuesta));
         reset();
       } else {
+        if (respuestaCreado.status === 400) {
+          Swal.fire(
+            'Ocurrio un error',
+            `El usuario ${datos.nombreTarea} ya existe, intente con otro nuevo`,
+            'error'
+          );
+          return;
+        }
         Swal.fire(
           'Ocurrio un error',
-          `La tarea ${datos.inputTarea} no fue creada, intentelo mas tarde`,
+          `La tarea ${datos.nombreTarea} no fue creada, intentelo mas tarde`,
           'error'
         );
       }
