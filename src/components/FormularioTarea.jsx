@@ -4,8 +4,7 @@ import ListaTareas from './ListaTareas';
 import {
   obtenerListaTareas,
   consultaAgregarTarea,
-  consultaTarea,
-  consultaBorrarTarea,
+  consultaBorrarTareas,
 } from './helpers/queries';
 import { useForm } from 'react-hook-form';
 import Swal from 'sweetalert2';
@@ -63,7 +62,7 @@ const FormularioTarea = () => {
       if (result.isConfirmed) {
         //borrar la lista de tareas de la API
         listaTareas.filter((tarea) =>
-          consultaBorrarTarea(tarea._id).then((respuesta) => {
+          consultaBorrarTareas().then((respuesta) => {
             if (respuesta) {
               console.log(respuesta);
               Swal.fire(
