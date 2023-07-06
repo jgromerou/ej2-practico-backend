@@ -133,6 +133,15 @@ const ItemTarea = ({ tarea, setListaTareas }) => {
                     value: /^[A-Za-z\s]+$/,
                     message: 'Por favor, ingrese solo letras y espacios.',
                   },
+                  minLength: {
+                    value: 2,
+                    message: 'La cantidad minima de caracteres es de 2 digitos',
+                  },
+                  maxLength: {
+                    value: 100,
+                    message:
+                      'La cantidad máxima de caracteres es de 100 digitos',
+                  },
                 })}
               />
               <Form.Text className="text-danger my-2 py-3">
