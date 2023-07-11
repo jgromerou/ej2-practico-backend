@@ -4,10 +4,6 @@
 
 Unir el proyecto desarrollado en el punto anterior con el proyecto de frontend de lista de tareas trabajado en el módulo de react.
 
-## Link Versión en Producción
-
-(Aún no disponible)
-
 ## Tecnologias / Herramientas 🛠
 
 - [HTML](https://developer.mozilla.org/es/docs/Web/HTML)
