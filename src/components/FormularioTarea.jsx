@@ -1,17 +1,17 @@
 import { useState, useEffect } from 'react';
-import { Form, Button, Row, Col } from 'react-bootstrap';
+import { Form, Button, Row, Col, Alert, Spinner } from 'react-bootstrap';
 import ListaTareas from './ListaTareas';
 import {
   obtenerListaTareas,
   consultaAgregarTarea,
-  consultaTarea,
-  consultaBorrarTarea,
+  consultaBorrarTareas,
 } from './helpers/queries';
 import { useForm } from 'react-hook-form';
 import Swal from 'sweetalert2';
 
 const FormularioTarea = () => {
   const [listaTareas, setListaTareas] = useState([]);
+  const [mostrarSpinner, setMostrarSpinner] = useState(false);
 
   const {
     register,
@@ -23,6 +23,18 @@ const FormularioTarea = () => {
   useEffect(() => {
     obtenerListaTareas().then((respuesta) => {
       setListaTareas(respuesta);
+      setMostrarSpinner(true);
+      if (respuesta === undefined) {
+        Swal.fire({
+          title: 'Ocurrió un error',
+          text: 'Algo salió mal, inténtelo más tarde.',
+          showConfirmButton: false,
+          allowOutsideClick: false,
+          allowEscapeKey: false,
+          allowEnterKey: false,
+        });
+        return;
+      }
     });
   }, []);
 
@@ -35,20 +47,26 @@ const FormularioTarea = () => {
           `La tarea ${datos.nombreTarea} fue creada correctamente`,
           'success'
         );
-        //actualizar la lista de tareas
         obtenerListaTareas().then((respuesta) => setListaTareas(respuesta));
         reset();
       } else {
+        if (respuestaCreado.status === 400) {
+          Swal.fire(
+            'Ocurrio un error',
+            `El usuario ${datos.nombreTarea} ya existe, intente con otro nuevo`,
+            'error'
+          );
+          return;
+        }
         Swal.fire(
           'Ocurrio un error',
-          `La tarea ${datos.inputTarea} no fue creada, intentelo mas tarde`,
+          `La tarea ${datos.nombreTarea} no fue creada, intentelo mas tarde`,
           'error'
         );
       }
     });
   };
 
-  //borrar todas las tareas del json-server
   const borrarlistaTareas = () => {
     Swal.fire({
       title: `¿Estás seguro de borrar toda la lista de tareas?`,
@@ -61,28 +79,25 @@ const FormularioTarea = () => {
       cancelButtonText: 'Cancelar',
     }).then((result) => {
       if (result.isConfirmed) {
-        //borrar la lista de tareas de la API
-        listaTareas.filter((tarea) =>
-          consultaBorrarTarea(tarea.id).then((respuesta) => {
-            if (respuesta) {
-              console.log(respuesta);
-              Swal.fire(
-                'Lista de Tareas eliminada',
-                `la lista completa fue eliminada correctamente`,
-                'success'
-              );
-              obtenerListaTareas().then((respuesta) => {
-                setListaTareas(respuesta);
-              });
-            } else {
-              Swal.fire(
-                'Ocurrio un error',
-                `No se puede borrar la tarea, intentelo mas tarde`,
-                'error'
-              );
-            }
-          })
-        );
+        consultaBorrarTareas().then((respuesta) => {
+          if (respuesta) {
+            console.log(respuesta);
+            Swal.fire(
+              'Lista de Tareas eliminada',
+              `la lista completa fue eliminada correctamente`,
+              'success'
+            );
+            obtenerListaTareas().then((respuesta) => {
+              setListaTareas(respuesta);
+            });
+          } else {
+            Swal.fire(
+              'Ocurrio un error',
+              `No se puede borrar la tarea, intentelo mas tarde`,
+              'error'
+            );
+          }
+        });
       }
     });
   };
@@ -112,6 +127,14 @@ const FormularioTarea = () => {
                 value: /^[A-Za-z\s]+$/,
                 message: 'Por favor, ingrese solo letras y espacios.',
               },
+              minLength: {
+                value: 2,
+                message: 'La cantidad minima de caracteres es de 2 digitos',
+              },
+              maxLength: {
+                value: 100,
+                message: 'La cantidad máxima de caracteres es de 100 digitos',
+              },
             })}
           />
           <Form.Text className="text-danger my-2 py-3">
@@ -127,10 +150,20 @@ const FormularioTarea = () => {
           Enviar
         </Button>
       </Form>
-      <ListaTareas
-        listaTareas={listaTareas}
-        setListaTareas={setListaTareas}
-      ></ListaTareas>
+      {listaTareas.length > 0 ? (
+        <ListaTareas
+          listaTareas={listaTareas}
+          setListaTareas={setListaTareas}
+        ></ListaTareas>
+      ) : mostrarSpinner ? (
+        <Alert variant="light" className="py-2 my-2">
+          <p className="display-5">No hay colores disponibles</p>
+        </Alert>
+      ) : (
+        <Spinner animation="border" role="status">
+          <span className="visually-hidden">Loading...</span>
+        </Spinner>
+      )}
     </section>
   );
 };

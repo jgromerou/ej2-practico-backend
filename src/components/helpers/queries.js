@@ -60,3 +60,15 @@ export const consultaEditarTarea = async (tarea, id) => {
     console.log(error);
   }
 };
+
+//Borrar todas las tareas
+export const consultaBorrarTareas = async () => {
+  try {
+    const respuesta = await fetch(`${URLTareas}`, {
+      method: 'DELETE',
+    });
+    return respuesta;
+  } catch (error) {
+    console.log(error);
+  }
+};

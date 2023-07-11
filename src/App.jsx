@@ -7,7 +7,7 @@ function App() {
   return (
     <>
       <Container className="my-5 mainPage">
-        <h1 className="display-4 text-center text-light">Lista de tareas</h1>
+        <h1 className="display-4 text-center">Lista de tareas</h1>
         <hr className="text-light" />
         <FormularioTarea></FormularioTarea>
       </Container>
