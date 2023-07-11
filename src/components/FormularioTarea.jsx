@@ -30,7 +30,7 @@ const FormularioTarea = () => {
     consultaAgregarTarea(datos).then((respuestaCreado) => {
       if (respuestaCreado && respuestaCreado.status === 201) {
         Swal.fire(
-          'Receta creada',
+          'Tarea creada',
           `La tarea ${datos.nombreTarea} fue creada correctamente`,
           'success'
         );
