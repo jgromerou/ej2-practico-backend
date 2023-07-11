@@ -1,4 +1,4 @@
-# Ejercicio 2 del TP Backend: Lista de Tareas - React ![React Icon](./src/assets/react.svg)
+# Ejercicio 2 del TP Backend: Frontend Lista de Tareas - React ![React Icon](./src/assets/react.svg)
 
 ## Descripción
 
@@ -48,6 +48,10 @@ Sigue estos pasos para clonar y ejecutar la aplicación en tu entorno local:
     ```
 
 5.  **Accede a la aplicación:** Abre tu navegador web y visita la siguiente URL: _http://localhost:5173_. La aplicación debería cargarse y estar lista para usar.
+
+## Repositorio Backend
+
+[Backend Lista de Tareas](https://github.com/jgromerou/ej1-practico-backend)
 
 ## Autor
 
