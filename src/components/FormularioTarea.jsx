@@ -12,7 +12,6 @@ import Swal from 'sweetalert2';
 const FormularioTarea = () => {
   const [listaTareas, setListaTareas] = useState([]);
   const [mostrarSpinner, setMostrarSpinner] = useState(false);
-  const [mostrarNoHayColor, setMostrarNoHayColor] = useState(false);
 
   const {
     register,
@@ -22,23 +21,18 @@ const FormularioTarea = () => {
   } = useForm();
 
   useEffect(() => {
-    setMostrarSpinner(false);
-    setMostrarNoHayColor(false);
     obtenerListaTareas().then((respuesta) => {
       setListaTareas(respuesta);
       setMostrarSpinner(true);
       if (respuesta === undefined) {
         Swal.fire({
           title: 'Ocurrió un error',
-          text: 'Algo salió mal, intentelo mas tarde.',
+          text: 'Algo salió mal, inténtelo más tarde.',
           showConfirmButton: false,
           allowOutsideClick: false,
           allowEscapeKey: false,
           allowEnterKey: false,
-          allowHtml: true,
-          //timer: 2000 // Tiempo en milisegundos antes de que la alerta se cierre automáticamente
         });
-        setMostrarNoHayColor(true);
         return;
       }
     });
@@ -53,7 +47,6 @@ const FormularioTarea = () => {
           `La tarea ${datos.nombreTarea} fue creada correctamente`,
           'success'
         );
-        //actualizar la lista de tareas
         obtenerListaTareas().then((respuesta) => setListaTareas(respuesta));
         reset();
       } else {
@@ -74,7 +67,6 @@ const FormularioTarea = () => {
     });
   };
 
-  //borrar todas las tareas del json-server
   const borrarlistaTareas = () => {
     Swal.fire({
       title: `¿Estás seguro de borrar toda la lista de tareas?`,
@@ -87,28 +79,25 @@ const FormularioTarea = () => {
       cancelButtonText: 'Cancelar',
     }).then((result) => {
       if (result.isConfirmed) {
-        //borrar la lista de tareas de la API
-        listaTareas.filter((tarea) =>
-          consultaBorrarTareas().then((respuesta) => {
-            if (respuesta) {
-              console.log(respuesta);
-              Swal.fire(
-                'Lista de Tareas eliminada',
-                `la lista completa fue eliminada correctamente`,
-                'success'
-              );
-              obtenerListaTareas().then((respuesta) => {
-                setListaTareas(respuesta);
-              });
-            } else {
-              Swal.fire(
-                'Ocurrio un error',
-                `No se puede borrar la tarea, intentelo mas tarde`,
-                'error'
-              );
-            }
-          })
-        );
+        consultaBorrarTareas().then((respuesta) => {
+          if (respuesta) {
+            console.log(respuesta);
+            Swal.fire(
+              'Lista de Tareas eliminada',
+              `la lista completa fue eliminada correctamente`,
+              'success'
+            );
+            obtenerListaTareas().then((respuesta) => {
+              setListaTareas(respuesta);
+            });
+          } else {
+            Swal.fire(
+              'Ocurrio un error',
+              `No se puede borrar la tarea, intentelo mas tarde`,
+              'error'
+            );
+          }
+        });
       }
     });
   };
@@ -161,20 +150,20 @@ const FormularioTarea = () => {
           Enviar
         </Button>
       </Form>
-      {listaTareas && listaTareas.length > 0 ? (
+      {listaTareas.length > 0 ? (
         <ListaTareas
           listaTareas={listaTareas}
           setListaTareas={setListaTareas}
         ></ListaTareas>
-      ) : !mostrarSpinner ? (
-        <Spinner animation="border" role="status">
-          <span className="visually-hidden">Loading...</span>
-        </Spinner>
-      ) : !mostrarNoHayColor ? (
+      ) : mostrarSpinner ? (
         <Alert variant="light" className="py-2 my-2">
           <p className="display-5">No hay colores disponibles</p>
         </Alert>
-      ) : null}
+      ) : (
+        <Spinner animation="border" role="status">
+          <span className="visually-hidden">Loading...</span>
+        </Spinner>
+      )}
     </section>
   );
 };
