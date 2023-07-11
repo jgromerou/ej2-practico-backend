@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Form, Button, Row, Col } from 'react-bootstrap';
+import { Form, Button, Row, Col, Alert, Spinner } from 'react-bootstrap';
 import ListaTareas from './ListaTareas';
 import {
   obtenerListaTareas,
@@ -11,6 +11,8 @@ import Swal from 'sweetalert2';
 
 const FormularioTarea = () => {
   const [listaTareas, setListaTareas] = useState([]);
+  const [mostrarSpinner, setMostrarSpinner] = useState(false);
+  const [mostrarNoHayColor, setMostrarNoHayColor] = useState(false);
 
   const {
     register,
@@ -20,8 +22,25 @@ const FormularioTarea = () => {
   } = useForm();
 
   useEffect(() => {
+    setMostrarSpinner(false);
+    setMostrarNoHayColor(false);
     obtenerListaTareas().then((respuesta) => {
       setListaTareas(respuesta);
+      setMostrarSpinner(true);
+      if (respuesta === undefined) {
+        Swal.fire({
+          title: 'Ocurrió un error',
+          text: 'Algo salió mal, intentelo mas tarde.',
+          showConfirmButton: false,
+          allowOutsideClick: false,
+          allowEscapeKey: false,
+          allowEnterKey: false,
+          allowHtml: true,
+          //timer: 2000 // Tiempo en milisegundos antes de que la alerta se cierre automáticamente
+        });
+        setMostrarNoHayColor(true);
+        return;
+      }
     });
   }, []);
 
@@ -142,10 +161,20 @@ const FormularioTarea = () => {
           Enviar
         </Button>
       </Form>
-      <ListaTareas
-        listaTareas={listaTareas}
-        setListaTareas={setListaTareas}
-      ></ListaTareas>
+      {listaTareas && listaTareas.length > 0 ? (
+        <ListaTareas
+          listaTareas={listaTareas}
+          setListaTareas={setListaTareas}
+        ></ListaTareas>
+      ) : !mostrarSpinner ? (
+        <Spinner animation="border" role="status">
+          <span className="visually-hidden">Loading...</span>
+        </Spinner>
+      ) : !mostrarNoHayColor ? (
+        <Alert variant="light" className="py-2 my-2">
+          <p className="display-5">No hay colores disponibles</p>
+        </Alert>
+      ) : null}
     </section>
   );
 };
