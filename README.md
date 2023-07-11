@@ -17,6 +17,12 @@ Unir el proyecto desarrollado en el punto anterior con el proyecto de frontend d
 - [React-Bootstrap](https://react-bootstrap.github.io/)
 - [Markdown](https://markdown.es/)
 
+## Para entorno **Local**:
+
+creamos el archivo .env y agregamos las siguientes variables de entorno
+
+- VITE_API_TAREAS=http://localhost:4000/apitareas/tareas
+
 ## Pasos para clonar y ejecutar la Aplicación 🖥
 
 Sigue estos pasos para clonar y ejecutar la aplicación en tu entorno local:
@@ -30,7 +36,7 @@ Sigue estos pasos para clonar y ejecutar la aplicación en tu entorno local:
 2.  **Accede al directorio:** Ve al directorio de la aplicación clonada:
 
     ```
-    cd <nombre de la carpeta>
+    cd ej2-practico-backend
     ```
 
 3.  **Instala las dependencias:** Ejecuta el siguiente comando para instalar las dependencias de la aplicación:
