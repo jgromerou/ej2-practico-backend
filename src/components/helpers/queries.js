@@ -61,7 +61,6 @@ export const consultaEditarTarea = async (tarea, id) => {
   }
 };
 
-//Borrar todas las tareas
 export const consultaBorrarTareas = async () => {
   try {
     const respuesta = await fetch(`${URLTareas}`, {

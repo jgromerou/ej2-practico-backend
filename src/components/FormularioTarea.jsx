@@ -39,7 +39,6 @@ const FormularioTarea = () => {
   }, []);
 
   const onSubmit = (datos) => {
-    console.log('tarea', datos);
     consultaAgregarTarea(datos).then((respuestaCreado) => {
       if (respuestaCreado && respuestaCreado.status === 201) {
         Swal.fire(
@@ -81,7 +80,6 @@ const FormularioTarea = () => {
       if (result.isConfirmed) {
         consultaBorrarTareas().then((respuesta) => {
           if (respuesta) {
-            console.log(respuesta);
             Swal.fire(
               'Lista de Tareas eliminada',
               `la lista completa fue eliminada correctamente`,
